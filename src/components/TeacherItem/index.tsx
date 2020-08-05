@@ -4,27 +4,37 @@ import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
 
-const TeacherItem = () => {
+export interface Teacher {
+  id: number;
+  avatar: string;
+  bio: string;
+  cost: number;
+  name: string
+  subject: string
+  whatsapp: string
+}
+
+interface TeacherItemProps {
+  teacher: Teacher;
+}
+
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
   return (
     <article className="teacher-item">
       <header>
-        <img src="https://avatars1.githubusercontent.com/u/38424834?s=460&u=30562206e41cd265195a7af9c9d57eb6e6374ea8&v=4" alt="Jonathan Cavalcante"/>
+        <img src={teacher.avatar} alt={teacher.name}/>
         <div>
-          <strong>Jonathan Cavalcante</strong>
-          <span>React</span>
+          <strong>{teacher.name}</strong>
+          <span>{teacher.subject}</span>
         </div>
       </header>
 
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        <br/><br/>
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 
-      </p>
+      <p>{teacher.bio}</p>
       
       <footer>
         <p>
           Preço/hora
-          <strong>R$50,00</strong>
+          <strong>{teacher.cost}</strong>
         </p>
         <button type="button">
           <img src={whatsappIcon} alt="Whatsapp"/>
