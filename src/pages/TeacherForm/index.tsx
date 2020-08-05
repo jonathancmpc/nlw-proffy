@@ -7,6 +7,7 @@ import Select from '../../components/Select';
 
 import warningIcon from '../../assets/images/icons/warning.svg';
 
+import api from '../../services/api';
 import './styles.css';
 
 function TeacherForm() {
@@ -22,8 +23,37 @@ function TeacherForm() {
     {week_day: 0, from: '', to: ''}
   ]);
 
+  /* Função para inserir os valores do select(array) de dia da semana e horário no estado scheduleItems */
+  function setScheduleItemValue(position: Number, field: string, value: string) {
+    /* Percorre o scheduleItems e verifica se a posição do seu indice do item é a mesma posição do index do item no select, e caso for o mesmo index, coloca o field(week_day ou from ou to) com o valor novo */
+    const updatedScheduleItems = scheduleItems.map((scheduleItem, index) => {
+      if (index === position) {
+        return {...scheduleItem, [field]: value }
+      }
+
+      return scheduleItem;
+    });
+
+    setScheduleItems(updatedScheduleItems);
+  }
+
   function handleCreateClass(props: FormEvent) {
     props.preventDefault();
+
+    /* Poderiamos chamar o async await, mas como é somente uma chamada a api não há necessidade */
+    api.post('/classes', {
+      name,
+      avatar,
+      whatsapp,
+      bio,
+      subject,
+      cost: Number(cost),
+      schedule: scheduleItems
+    }).then(() => {
+      alert('Cadastro realizado com sucesso!');
+    }).catch(() => {
+      alert('Erro no cadastro');
+    });
 
     console.log({
       name,
@@ -31,7 +61,8 @@ function TeacherForm() {
       whatsapp,
       bio,
       subject,
-      cost
+      cost,
+      scheduleItems,
     });
   }
 
@@ -120,12 +151,14 @@ function TeacherForm() {
               </button>
             </legend>
 
-            {scheduleItems.map(scheduleItem => {
+            {scheduleItems.map((scheduleItem, index) => {
               return (
                 <div key={scheduleItem.week_day} className="schedule-item">
                   <Select 
                     name="week_day" 
                     label="Dia da semana"
+                    value={scheduleItem.week_day}
+                    onChange={(e) => setScheduleItemValue(index, 'week_day', e.target.value)}
                     options={[
                       { value: '0', label: 'Domingo' },
                       { value: '1', label: 'Segunda-feira' },
@@ -137,8 +170,20 @@ function TeacherForm() {
                     ]}
                   />
     
-                  <Input name="from" label="Das" type="time" />
-                  <Input name="to" label="Até" type="time" />
+                  <Input 
+                    name="from" 
+                    label="Das" 
+                    type="time" 
+                    value={scheduleItem.from}
+                    onChange={(e) => setScheduleItemValue(index, 'from', e.target.value)}
+                  />
+                  <Input 
+                    name="to" 
+                    label="Até" 
+                    type="time" 
+                    value={scheduleItem.to}
+                    onChange={(e) => setScheduleItemValue(index, 'to', e.target.value)}
+                  />
                 </div>
               );
             })}
