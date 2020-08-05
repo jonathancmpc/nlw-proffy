@@ -2,6 +2,8 @@ import React from 'react';
 
 import PageHeader from '../../components/Page-Header';
 import Input from '../../components/Input';
+import TextArea from '../../components/TextArea';
+import Select from '../../components/Select';
 
 import warningIcon from '../../assets/images/icons/warning.svg';
 
@@ -22,13 +24,61 @@ function TeacherForm() {
           <Input name="name" label="Nome completo"/>
           <Input name="avatar" label="Avatar"/>
           <Input name="whatsapp" label="WhatsApp"/>
+          <TextArea name="bio" label="Biografia"/>
         </fieldset>
 
         <fieldset>
           <legend>Sobre a aula</legend>
 
-          <Input name="subject" label="Matéria"/>
+          <Select 
+            name="subject" 
+            label="Matéria"
+            options={[
+              { value: 'Artes', label: 'Artes' },
+              { value: 'Biologia', label: 'Biologia' },
+              { value: 'Ciências', label: 'Ciências' },
+              { value: 'Educação física', label: 'Educação física' },
+              { value: 'Física', label: 'Física' },
+              { value: 'Geografia', label: 'Geografia' },
+              { value: 'História', label: 'História' },
+              { value: 'Matemática', label: 'Matemática' },
+              { value: 'Português', label: 'Português' },
+              { value: 'Química', label: 'Química' },
+            ]}
+          />
           <Input name="cost" label="Custo da sua hora por aula"/>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            Horários disponíveis
+            <button type="button">
+              + Novo Horário
+            </button>
+          </legend>
+
+          <div className="schedule-item">
+            <Select 
+              name="subject" 
+              label="Matéria"
+              options={[
+                { value: 'Artes', label: 'Artes' },
+                { value: 'Biologia', label: 'Biologia' },
+                { value: 'Ciências', label: 'Ciências' },
+                { value: 'Educação física', label: 'Educação física' },
+                { value: 'Física', label: 'Física' },
+                { value: 'Geografia', label: 'Geografia' },
+                { value: 'História', label: 'História' },
+                { value: 'Matemática', label: 'Matemática' },
+                { value: 'Português', label: 'Português' },
+                { value: 'Química', label: 'Química' },
+              ]}
+            />
+
+            <Input name="from" label="Das" type="time" />
+            <Input name="to" label="Até" type="time" />
+          </div>
+
         </fieldset>
 
         <footer>
